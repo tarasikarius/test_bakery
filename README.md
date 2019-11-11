@@ -9,5 +9,9 @@ php order.php pancake
 Метод проверки продукта на готовность -- \src\Entity\BaseProduct::isCompleted
 
 Допустим, приготовление блина прошло успешно, в консоли должен появиться результат
+
 Pancake completed
-если по какой-то причине блюдо не приготовилось, необходимо вывести на экран почему: {productName} was not completed because of {failReason}
+
+если по какой-то причине блюдо не приготовилось, необходимо вывести на экран почему: 
+
+{productName} was not completed because of {failReason}
