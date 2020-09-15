@@ -5,6 +5,7 @@ namespace src\Entity;
 abstract class BaseProduct
 {
     const NAME_PANCAKE = 'pancake';
+    const NAME_AMERICANO = 'americano';
 
     /** @var array */
     protected $ingredients = [];
@@ -43,5 +44,21 @@ abstract class BaseProduct
     public function getIngredients(): array
     {
         return $this->ingredients;
+    }
+
+    public function mixIngredients(): void
+    {
+        $this->mix($this->getReceiptIngredients());
+    }
+
+    protected function mix(array $ingredients)
+    {
+        foreach ($ingredients as $name => $class) {
+            if (isset($this->ingredients[$name])) {
+                continue;
+            }
+
+            $this->ingredients[$name] = new $class();
+        }
     }
 }

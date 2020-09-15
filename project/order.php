@@ -1,5 +1,9 @@
 <?php
 
+use src\Entity\BaseRequest;
+use src\Exception\OrderWithoutArgumentsException;
+use src\Exception\ProductNotCompleteException;
+use src\Exception\ProductNotFoundException;
 use src\Manufacture\Bakery\Bakery;
 
 function myAutoLoad($className)
@@ -13,7 +17,15 @@ function myAutoLoad($className)
 }
 spl_autoload_register('myAutoLoad', '', true);
 
-$bakery = new Bakery();
+try {
+    $request = BaseRequest::createFromArguments($argv);
+    $bakery = new Bakery();
+    $product = $bakery->produce($request);
+} catch (OrderWithoutArgumentsException $e) {
+    exit(sprintf("\n%s\n", $e->getMessage()));
+} catch (ProductNotCompleteException | ProductNotFoundException $e) {
+    exit(sprintf("\n%s was not completed because of %s\n", $request->getProductName(), lcfirst($e->getMessage())));
+}
 
-// TODO: Implement bakery->produce(BaseRequest $request) method and echo result like '{productName} completed' or '{productName} was not completed because of {failReason}'
+echo sprintf("\n%s completed!\n", $product->getName());
 
